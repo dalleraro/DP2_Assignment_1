@@ -1,0 +1,19 @@
+<!-- DTD describing a workflow -->
+<!ELEMENT workflow (action*)>
+<!ATTLIST workflow
+        name            ID          #REQUIRED
+>
+<!ELEMENT action (simple_action|process_action) >
+<!ATTLIST action
+        name            ID          #REQUIRED
+        role            NMTOKEN     #REQUIRED
+        AutomIst        (yes|no)    "no"
+>
+<!ELEMENT simple_action EMPTY >
+<!ATTLIST simple_action
+        nexPossActions  IDREFS      #IMPLIED
+>
+<!ELEMENT process_action EMPTY >
+<!ATTLIST process_action
+        workflow        IDREF       #REQUIRED
+>
