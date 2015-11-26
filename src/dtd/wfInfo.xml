@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE workflow SYSTEM "wfinfo.dtd" >
+
+<workflow name="article_production">
+    <action name="Writing" role="Journalist" AutomIst="true">
+        <simple_action nexPossActions="Checking"></simple_action>
+    </action>
+    <action name="Checking" role="Editor">
+        <simple_action nexPossActions="Revising Publication"></simple_action>
+    </action>
+    <action name="Revising" role="Journalist">
+        <simple_action nexPossActions="Checking"></simple_action>
+    </action>
+    <action name="Publication" role="Editor">
+        <simple_action></simple_action>
+    </action>
+</workflow>

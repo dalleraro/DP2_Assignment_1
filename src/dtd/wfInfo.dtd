@@ -7,7 +7,7 @@
 <!ATTLIST action
         name            ID          #REQUIRED
         role            NMTOKEN     #REQUIRED
-        AutomIst        (yes|no)    "no"
+        AutomIst        (true|false)    "false"
 >
 <!ELEMENT simple_action EMPTY >
 <!ATTLIST simple_action
