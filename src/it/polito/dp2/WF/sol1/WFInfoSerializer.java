@@ -40,7 +40,7 @@ public class WFInfoSerializer {
 	private WorkflowMonitor monitor;
 	private DateFormat dateFormat;
 
-	
+
 	/**
 	 * Default constructror
 	 * @throws WorkflowMonitorException 
@@ -61,7 +61,7 @@ public class WFInfoSerializer {
 		root = (Element) doc.createElement(rootname);
 		doc.appendChild(root);
 	}
-	
+
 	public WFInfoSerializer(String rootname, WorkflowMonitor monitor) throws ParserConfigurationException {
 		super();
 		this.monitor = monitor;
@@ -78,7 +78,7 @@ public class WFInfoSerializer {
 		doc.appendChild(root);
 	}
 
-	
+
 	public static void main(String[] args) {
 		WFInfoSerializer wf;
 		try {
@@ -86,7 +86,7 @@ public class WFInfoSerializer {
 			wf = new WFInfoSerializer("workflow_info");
 			wf.appendAll();
 			wf.serialize(new PrintStream(out));
-			
+
 		} catch (WorkflowMonitorException e) {
 			System.err.println("Could not instantiate data generator.");
 			e.printStackTrace();
@@ -120,11 +120,13 @@ public class WFInfoSerializer {
 			process.setAttribute("start_date", dateFormat.format(prr.getStartTime().getTime()));
 			process.setAttribute("workflow", prr.getWorkflow().getName());
 			StringBuffer buff = new StringBuffer();
-			
+
 			List<ActionStatusReader> statusSet = prr.getStatus();
-			for (ActionStatusReader asr : statusSet)
-				buff.append(asr.getActionName()+" ");
-			process.setAttribute("status", buff.toString().trim());
+			if(!statusSet.isEmpty()){
+				for (ActionStatusReader asr : statusSet)
+					buff.append(asr.getActionName()+" ");
+				process.setAttribute("status", buff.toString().trim());
+			}
 			root.appendChild(process);
 		}
 	}
@@ -132,12 +134,12 @@ public class WFInfoSerializer {
 	private void appendWorkflows() {
 		// Get the list of workflows
 		Set<WorkflowReader> set = monitor.getWorkflows();
-		
+
 		// For each workflow create the element
 		for (WorkflowReader wfr: set) {
 			Element workflow = doc.createElement("workflow");
 			workflow.setAttribute("name", wfr.getName());
-			
+
 			Set<ActionReader> setAct = wfr.getActions();
 			for (ActionReader ar: setAct) {
 				Element action = doc.createElement("action");
@@ -148,9 +150,11 @@ public class WFInfoSerializer {
 					Element simpleAct = doc.createElement("simple_action");
 					StringBuffer buff = new StringBuffer();
 					Set<ActionReader> setNxt = ((SimpleActionReader)ar).getPossibleNextActions();
-					for (ActionReader nAct: setNxt)
-						buff.append(nAct.getName()+" ");
-					simpleAct.setAttribute("nextPossActions", buff.toString().trim());
+					if(!setNxt.isEmpty()){
+						for (ActionReader nAct: setNxt)
+							buff.append(nAct.getName()+" ");
+						simpleAct.setAttribute("nextPossActions", buff.toString().trim());
+					}
 					action.appendChild(simpleAct);
 				}
 				else if (ar instanceof ProcessActionReader) {
@@ -162,9 +166,9 @@ public class WFInfoSerializer {
 			}
 			root.appendChild(workflow);
 		}
-		
+
 	}
-	
+
 	public void serialize(PrintStream out) throws TransformerException {
 		TransformerFactory xformFactory = TransformerFactory.newInstance ();
 		Transformer idTransform;
