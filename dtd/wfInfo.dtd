@@ -17,3 +17,8 @@
 <!ATTLIST process_action
         workflow        IDREF       #REQUIRED
 >
+<!ELEMENT process (status) >
+<!ATTLIST process
+		start_time		NMTOKEN		#REQUIRED
+		workflow		IDREF		#REQUIRED
+>
