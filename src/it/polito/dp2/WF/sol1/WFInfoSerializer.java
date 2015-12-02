@@ -30,7 +30,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 
 public class WFInfoSerializer {
@@ -56,6 +58,12 @@ public class WFInfoSerializer {
 
 		// Create the document
 		doc = builder.newDocument();
+		DOMImplementation domImpl = doc.getImplementation();
+		DocumentType doctype = domImpl.createDocumentType("workflow_info",
+			null,
+		    "wfInfo.dtd");
+		doc.appendChild(doctype);
+		
 
 		// Create and append the root element
 		root = (Element) doc.createElement(rootname);
@@ -72,6 +80,9 @@ public class WFInfoSerializer {
 
 		// Create the document
 		doc = builder.newDocument();
+		DOMImplementation domImpl = doc.getImplementation();
+		DocumentType doctype = domImpl.createDocumentType("workflow_info", null, "wfInfo.dtd");
+		doc.appendChild(doctype);
 
 		// Create and append the root element
 		root = (Element) doc.createElement(rootname);
