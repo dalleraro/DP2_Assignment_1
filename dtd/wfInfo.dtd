@@ -1,4 +1,5 @@
 <!-- DTD describing a workflow -->
+<!ELEMENT workflow_info ((workflow|process)*) >
 <!ELEMENT workflow (action*)>
 <!ATTLIST workflow
         name            ID          #REQUIRED
@@ -7,7 +8,7 @@
 <!ATTLIST action
         name            ID          #REQUIRED
         role            NMTOKEN     #REQUIRED
-        AutomIst        (true|false)    "false"
+        automInst       (true|false)    "false"
 >
 <!ELEMENT simple_action EMPTY >
 <!ATTLIST simple_action
@@ -17,8 +18,9 @@
 <!ATTLIST process_action
         workflow        IDREF       #REQUIRED
 >
-<!ELEMENT process (status) >
+<!ELEMENT process EMPTY >
 <!ATTLIST process
-		start_time		NMTOKEN		#REQUIRED
+		start_date		NMTOKEN		#REQUIRED
 		workflow		IDREF		#REQUIRED
+		status			IDREFS		#IMPLIED
 >
