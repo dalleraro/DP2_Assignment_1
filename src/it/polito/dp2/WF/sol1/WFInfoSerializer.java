@@ -119,9 +119,12 @@ public class WFInfoSerializer {
 			Element process = doc.createElement("process");
 			process.setAttribute("start_date", dateFormat.format(prr.getStartTime().getTime()));
 			process.setAttribute("workflow", prr.getWorkflow().getName());
-
+			StringBuffer buff = new StringBuffer();
+			
 			List<ActionStatusReader> statusSet = prr.getStatus();
-			process.setAttribute("status", statusSet.toString());
+			for (ActionStatusReader asr : statusSet)
+				buff.append(asr.getActionName()+" ");
+			process.setAttribute("status", buff.toString().trim());
 			root.appendChild(process);
 		}
 	}
@@ -143,7 +146,11 @@ public class WFInfoSerializer {
 				action.setAttribute("automInst", ar.isAutomaticallyInstantiated() ? "true" : "false");
 				if(ar instanceof SimpleActionReader) {
 					Element simpleAct = doc.createElement("simple_action");
-					simpleAct.setAttribute("nextPossActions", ((SimpleActionReader) ar).getPossibleNextActions().toString());
+					StringBuffer buff = new StringBuffer();
+					Set<ActionReader> setNxt = ((SimpleActionReader)ar).getPossibleNextActions();
+					for (ActionReader nAct: setNxt)
+						buff.append(nAct.getName()+" ");
+					simpleAct.setAttribute("nextPossActions", buff.toString().trim());
 					action.appendChild(simpleAct);
 				}
 				else if (ar instanceof ProcessActionReader) {
