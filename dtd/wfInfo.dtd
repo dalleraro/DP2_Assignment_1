@@ -18,9 +18,19 @@
 <!ATTLIST process_action
         workflow        IDREF       	#REQUIRED
 >
-<!ELEMENT process EMPTY >
+<!ELEMENT process (action_execution*) >
 <!ATTLIST process
-		start_date		NMTOKEN			#REQUIRED
+		startDate		CDATA			#REQUIRED
 		workflow		IDREF			#REQUIRED
-		status			IDREFS			#IMPLIED
+>
+<!ELEMENT action_execution EMPTY >
+<!ATTLIST action_execution
+		action			IDREF			#REQUIRED
+		actor			IDREF			#IMPLIED
+		terminationTime	CDATA			#IMPLIED
+>
+<!ELEMENT actor EMPTY >
+<!ATTLIST actor
+		name			ID				#REQUIRED
+		role			NMTOKEN			#REQUIRED
 >
