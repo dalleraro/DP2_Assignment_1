@@ -12,7 +12,7 @@
 >
 <!ELEMENT simple_action EMPTY >
 <!ATTLIST simple_action
-        nexPossActions  IDREFS      	#IMPLIED
+        nextPossActions  IDREFS      	#IMPLIED
 >
 <!ELEMENT process_action EMPTY >
 <!ATTLIST process_action
