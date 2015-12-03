@@ -31,6 +31,7 @@
 >
 <!ELEMENT actor EMPTY >
 <!ATTLIST actor
-		name			ID				#REQUIRED
-		role			NMTOKEN			#REQUIRED
+		id				ID				#REQUIRED
+		name			CDATA			#REQUIRED
+		role			CDATA			#REQUIRED
 >

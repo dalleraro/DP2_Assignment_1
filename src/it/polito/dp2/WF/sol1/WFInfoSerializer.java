@@ -2,6 +2,7 @@ package it.polito.dp2.WF.sol1;
 
 import it.polito.dp2.WF.ActionReader;
 import it.polito.dp2.WF.ActionStatusReader;
+import it.polito.dp2.WF.Actor;
 import it.polito.dp2.WF.ProcessActionReader;
 import it.polito.dp2.WF.ProcessReader;
 import it.polito.dp2.WF.SimpleActionReader;
@@ -127,11 +128,13 @@ public class WFInfoSerializer {
 					Element action_execution = doc.createElement("action_execution");
 					action_execution.setAttribute("action",	asr.getActionName());
 					if(asr.isTakenInCharge()){
-						action_execution.setAttribute("actor", asr.getActor().getName());
-						if(doc.getElementById(asr.getActor().getName()) == null){
+						String hash = computeActorHash(asr.getActor());
+						action_execution.setAttribute("actor", hash);
+						if(doc.getElementById(hash) == null){
 							Element actor = doc.createElement("actor");
+							actor.setAttribute("id", hash);
+							actor.setIdAttribute("id", true);
 							actor.setAttribute("name", asr.getActor().getName());
-							actor.setIdAttribute("name", true);
 							actor.setAttribute("role", asr.getActor().getRole());
 							
 							root.appendChild(actor);
@@ -145,6 +148,11 @@ public class WFInfoSerializer {
 			}
 			root.appendChild(process);
 		}
+	}
+
+	private String computeActorHash(Actor actor) {
+		String forhash = actor.getName() + actor.getRole();
+		return "a"+forhash.hashCode();
 	}
 
 	private void appendWorkflows() {
