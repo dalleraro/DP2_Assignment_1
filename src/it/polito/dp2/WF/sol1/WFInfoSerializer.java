@@ -58,11 +58,6 @@ public class WFInfoSerializer {
 
 		// Create the document
 		doc = builder.newDocument();
-		DOMImplementation domImpl = doc.getImplementation();
-		DocumentType doctype = domImpl.createDocumentType("workflow_info",
-			null,
-		    "wfInfo.dtd");
-		doc.appendChild(doctype);
 		
 
 		// Create and append the root element
@@ -80,9 +75,6 @@ public class WFInfoSerializer {
 
 		// Create the document
 		doc = builder.newDocument();
-		DOMImplementation domImpl = doc.getImplementation();
-		DocumentType doctype = domImpl.createDocumentType("workflow_info", null, "wfInfo.dtd");
-		doc.appendChild(doctype);
 
 		// Create and append the root element
 		root = (Element) doc.createElement(rootname);
@@ -181,10 +173,13 @@ public class WFInfoSerializer {
 	}
 
 	public void serialize(PrintStream out) throws TransformerException {
+		DOMImplementation domImpl = doc.getImplementation();
+		DocumentType doctype = domImpl.createDocumentType("workflow_info", null, "wfInfo.dtd");
 		TransformerFactory xformFactory = TransformerFactory.newInstance ();
 		Transformer idTransform;
 		idTransform = xformFactory.newTransformer ();
 		idTransform.setOutputProperty(OutputKeys.INDENT, "yes");
+		idTransform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
 		Source input = new DOMSource (doc);
 		Result output = new StreamResult (out);
 		idTransform.transform (input, output);
