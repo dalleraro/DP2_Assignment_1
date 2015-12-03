@@ -1,5 +1,5 @@
 <!-- DTD describing a workflow -->
-<!ELEMENT workflow_info ((workflow|process)*) >
+<!ELEMENT workflow_info ((workflow|process|actor)*) >
 <!ELEMENT workflow (action*)>
 <!ATTLIST workflow
         name            ID          	#REQUIRED
