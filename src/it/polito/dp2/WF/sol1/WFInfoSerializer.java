@@ -30,9 +30,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 
 public class WFInfoSerializer {
@@ -173,13 +171,11 @@ public class WFInfoSerializer {
 	}
 
 	public void serialize(PrintStream out) throws TransformerException {
-		DOMImplementation domImpl = doc.getImplementation();
-		DocumentType doctype = domImpl.createDocumentType("workflow_info", null, "wfInfo.dtd");
 		TransformerFactory xformFactory = TransformerFactory.newInstance ();
 		Transformer idTransform;
 		idTransform = xformFactory.newTransformer ();
 		idTransform.setOutputProperty(OutputKeys.INDENT, "yes");
-		idTransform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
+		idTransform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "WfInfo.dtd");
 		Source input = new DOMSource (doc);
 		Result output = new StreamResult (out);
 		idTransform.transform (input, output);
