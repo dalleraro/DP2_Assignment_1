@@ -23,7 +23,7 @@ public class WorkflowReaderImpl implements WorkflowReader {
 		
 		NodeList list = wf.getElementsByTagName("process");
 		for(int i=0; i<list.getLength(); i++){
-			ac = new ActionReaderImpl((Element)list.item(i));
+			ac = new ActionReaderImpl((Element)list.item(i), this);
 			actions.add(ac);
 		}
 	}

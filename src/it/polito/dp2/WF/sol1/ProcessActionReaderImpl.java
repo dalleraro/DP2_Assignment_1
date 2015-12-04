@@ -8,14 +8,13 @@ import it.polito.dp2.WF.WorkflowReader;
 public class ProcessActionReaderImpl extends ActionReaderImpl implements
 		ProcessActionReader {
 
-	public ProcessActionReaderImpl(Element action) {
-		super(action);
-		// TODO Auto-generated constructor stub
+	public ProcessActionReaderImpl(Element action, WorkflowReader enclosingWf) {
+		super(action, enclosingWf);
 	}
 
 	@Override
 	public WorkflowReader getActionWorkflow() {
-		// TODO Auto-generated method stub
+		// TODO
 		return null;
 	}
 

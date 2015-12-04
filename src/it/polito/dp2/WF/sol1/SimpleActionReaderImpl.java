@@ -6,12 +6,13 @@ import org.w3c.dom.Element;
 
 import it.polito.dp2.WF.ActionReader;
 import it.polito.dp2.WF.SimpleActionReader;
+import it.polito.dp2.WF.WorkflowReader;
 
 public class SimpleActionReaderImpl extends ActionReaderImpl implements
 		SimpleActionReader {
 
-	public SimpleActionReaderImpl(Element action) {
-		super(action);
+	public SimpleActionReaderImpl(Element action, WorkflowReader enclosingWf) {
+		super(action, enclosingWf);
 		// TODO Auto-generated constructor stub
 	}
 

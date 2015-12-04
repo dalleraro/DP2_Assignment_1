@@ -6,33 +6,34 @@ import it.polito.dp2.WF.ActionReader;
 import it.polito.dp2.WF.WorkflowReader;
 
 public class ActionReaderImpl implements ActionReader {
+	protected Element action;
+	protected WorkflowReader enclosingWf;
 
-	public ActionReaderImpl(Element action) {
-		// TODO Auto-generated constructor stub
+	public ActionReaderImpl(Element action, WorkflowReader encWf) {
+		this.action = action;
 	}
 
 	@Override
 	public WorkflowReader getEnclosingWorkflow() {
-		// TODO Auto-generated method stub
-		return null;
+		return enclosingWf;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return action.getAttribute("name");
 	}
 
 	@Override
 	public String getRole() {
-		// TODO Auto-generated method stub
-		return null;
+		return action.getAttribute("role");
 	}
 
 	@Override
 	public boolean isAutomaticallyInstantiated() {
-		// TODO Auto-generated method stub
-		return false;
+		if(action.getAttribute("automInst").equals("true"))
+			return true;
+		else 
+			return false;
 	}
 
 }
