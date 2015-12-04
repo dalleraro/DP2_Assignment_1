@@ -20,6 +20,7 @@
 >
 <!ELEMENT process (action_execution*) >
 <!ATTLIST process
+		id				ID				#REQUIRED
 		startDate		CDATA			#REQUIRED
 		workflow		IDREF			#REQUIRED
 >
