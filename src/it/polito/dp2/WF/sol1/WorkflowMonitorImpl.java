@@ -19,7 +19,9 @@ import it.polito.dp2.WF.WorkflowMonitor;
 import it.polito.dp2.WF.WorkflowReader;
 
 public class WorkflowMonitorImpl implements WorkflowMonitor {
-	Document doc;
+	private Document doc;
+	Set<ProcessReader> processes;
+	Set<WorkflowReader> workflows;
 	
 	
 	public WorkflowMonitorImpl(){
@@ -31,6 +33,36 @@ public class WorkflowMonitorImpl implements WorkflowMonitor {
 			dBuilder = dbFactory.newDocumentBuilder();
 			this.doc = dBuilder.parse(fXmlFile);
 			this.doc.getDocumentElement().normalize();
+			
+			// Read processes
+			ProcessReader proc;
+			processes = new LinkedHashSet<ProcessReader>();
+			
+			NodeList procList = doc.getElementsByTagName("process");
+			for(int i=0; i<procList.getLength(); i++){
+				proc = new ProcessReaderImpl((Element)procList.item(i));
+				processes.add(proc);
+			}
+			
+			// Read workflows
+			WorkflowReader wf;
+			workflows = new LinkedHashSet<WorkflowReader>();
+			
+			NodeList wfList = doc.getElementsByTagName("process");
+			for(int i=0; i<wfList.getLength(); i++){
+				wf = new WorkflowReaderImpl((Element)wfList.item(i));
+				workflows.add(wf);
+			}
+			
+			for(WorkflowReader wit : workflows){
+				for(ProcessReader pit : processes){
+					if(pit.getWorkflow().equals(wit.getName())){
+						((WorkflowReaderImpl)wit).addProcess(pit);
+						((ProcessReaderImpl)pit).setWorkflow(wit);
+					}
+				}
+			}
+			
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,36 +78,16 @@ public class WorkflowMonitorImpl implements WorkflowMonitor {
 	
 	@Override
 	public Set<ProcessReader> getProcesses() {
-		ProcessReader proc;
-		Set<ProcessReader> processes = new LinkedHashSet<ProcessReader>();
-		
-		NodeList list = doc.getElementsByTagName("process");
-		for(int i=0; i<list.getLength(); i++){
-			proc = new ProcessReaderImpl((Element)list.item(i));
-			processes.add(proc);
-		}
 		return processes;
 	}
 
 	@Override
 	public WorkflowReader getWorkflow(String wf) {
-		Element workflow = doc.getElementById(wf);
-		if(workflow != null)
-			return new WorkflowReaderImpl(workflow);
-		else
-			return null;
+		return null;
 	}
 
 	@Override
 	public Set<WorkflowReader> getWorkflows() {
-		WorkflowReader wf;
-		Set<WorkflowReader> workflows = new LinkedHashSet<WorkflowReader>();
-		
-		NodeList list = doc.getElementsByTagName("process");
-		for(int i=0; i<list.getLength(); i++){
-			wf = new WorkflowReaderImpl((Element)list.item(i));
-			workflows.add(wf);
-		}
 		return workflows;
 	}
 

@@ -2,7 +2,6 @@ package it.polito.dp2.WF.sol1;
 
 import it.polito.dp2.WF.ActionReader;
 import it.polito.dp2.WF.ActionStatusReader;
-import it.polito.dp2.WF.Actor;
 import it.polito.dp2.WF.ProcessActionReader;
 import it.polito.dp2.WF.ProcessReader;
 import it.polito.dp2.WF.SimpleActionReader;
@@ -119,20 +118,23 @@ public class WFInfoSerializer {
 		// For each process create the element
 		for (ProcessReader prr: set) {
 			Element process = doc.createElement("process");
-			process.setAttribute("startDate", dateFormat.format(prr.getStartTime().getTime()));
-			process.setAttribute("workflow", prr.getWorkflow().getName());
-
+			String wfName = prr.getWorkflow().getName();
+			String startDate = dateFormat.format(prr.getStartTime().getTime());
+			process.setAttribute("startDate", startDate);
+			process.setAttribute("workflow", wfName);
+			String procHash = computeHash("p", wfName, startDate);
+			process.setAttribute("id", procHash);
 			List<ActionStatusReader> statusSet = prr.getStatus();
 			if(!statusSet.isEmpty()){
 				for (ActionStatusReader asr : statusSet){
 					Element action_execution = doc.createElement("action_execution");
 					action_execution.setAttribute("action",	asr.getActionName());
 					if(asr.isTakenInCharge()){
-						String hash = computeActorHash(asr.getActor());
-						action_execution.setAttribute("actor", hash);
-						if(doc.getElementById(hash) == null){
+						String actorHash = computeHash("a", asr.getActor().getName(), asr.getActor().getRole());
+						action_execution.setAttribute("actor", actorHash);
+						if(doc.getElementById(actorHash) == null){
 							Element actor = doc.createElement("actor");
-							actor.setAttribute("id", hash);
+							actor.setAttribute("id", actorHash);
 							actor.setIdAttribute("id", true);
 							actor.setAttribute("name", asr.getActor().getName());
 							actor.setAttribute("role", asr.getActor().getRole());
@@ -150,9 +152,9 @@ public class WFInfoSerializer {
 		}
 	}
 
-	private String computeActorHash(Actor actor) {
-		String forhash = actor.getName() + actor.getRole();
-		return "a"+forhash.hashCode();
+	private String computeHash(String start, String str1, String str2) {
+		String forhash = str1 + str2;
+		return start+forhash.hashCode();
 	}
 
 	private void appendWorkflows() {
@@ -163,6 +165,7 @@ public class WFInfoSerializer {
 		for (WorkflowReader wfr: set) {
 			Element workflow = doc.createElement("workflow");
 			workflow.setAttribute("name", wfr.getName());
+			workflow.setIdAttribute("name", true);
 
 			Set<ActionReader> setAct = wfr.getActions();
 			for (ActionReader ar: setAct) {

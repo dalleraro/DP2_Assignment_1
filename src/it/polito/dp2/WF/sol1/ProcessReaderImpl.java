@@ -10,6 +10,8 @@ import it.polito.dp2.WF.ProcessReader;
 import it.polito.dp2.WF.WorkflowReader;
 
 public class ProcessReaderImpl implements ProcessReader {
+	Element proc;
+	WorkflowReader workflow;
 
 	public ProcessReaderImpl(Element item) {
 		// TODO Auto-generated constructor stub
@@ -31,6 +33,10 @@ public class ProcessReaderImpl implements ProcessReader {
 	public WorkflowReader getWorkflow() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void setWorkflow(WorkflowReader wf) {
+		this.workflow = wf;
 	}
 
 }

@@ -1,48 +1,59 @@
 package it.polito.dp2.WF.sol1;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import it.polito.dp2.WF.ActionReader;
 import it.polito.dp2.WF.ProcessReader;
 import it.polito.dp2.WF.WorkflowReader;
 
 public class WorkflowReaderImpl implements WorkflowReader {
-	Element wf;
+	private Set<ActionReader> actions;
+	private Set<ProcessReader> processes;
+	private Element wf;
 
 	public WorkflowReaderImpl(Element workflow) {
 		this.wf = workflow;
+		this.processes = new LinkedHashSet<ProcessReader>();
+		ActionReader ac;
+		actions = new LinkedHashSet<ActionReader>();
+		
+		NodeList list = wf.getElementsByTagName("process");
+		for(int i=0; i<list.getLength(); i++){
+			ac = new ActionReaderImpl((Element)list.item(i));
+			actions.add(ac);
+		}
+	}
+	
+	public void addProcess(ProcessReader proc){
+		processes.add(proc);
 	}
 
 	@Override
-	public ActionReader getAction(String arg0) {
-		ActionReader acRead;
-		Element action = (Element)wf.getFirstChild();
-		do{
-			acRead = new ActionReaderImpl(action);
-			if(acRead.getName().equals(arg0))
-				return acRead;
-		}while((action = (Element)action.getNextSibling()) != null);
+	public ActionReader getAction(String name) {
+		for(ActionReader ac : actions){
+			if(ac.getName().equals(name))
+				return ac;
+		}
 		return null;
 	}
 
 	@Override
 	public Set<ActionReader> getActions() {
-		// TODO Auto-generated method stub
-		return null;
+		return actions;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return wf.getAttribute("name");
 	}
 
 	@Override
 	public Set<ProcessReader> getProcesses() {
-		// TODO Auto-generated method stub
-		return null;
+		return processes;
 	}
 
 }
