@@ -11,6 +11,7 @@ import org.w3c.dom.Element;
 
 import it.polito.dp2.WF.ActionStatusReader;
 import it.polito.dp2.WF.ProcessReader;
+import it.polito.dp2.WF.WorkflowMonitor;
 import it.polito.dp2.WF.WorkflowReader;
 
 public class ProcessReaderImpl implements ProcessReader {
@@ -19,14 +20,14 @@ public class ProcessReaderImpl implements ProcessReader {
 	private DateFormat dateFormat;
 	private List<ActionStatusReader> status;
 
-	public ProcessReaderImpl(Element proc) {
+	public ProcessReaderImpl(Element proc, WorkflowMonitor monitor) {
 		this.proc = proc;
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 		status = new LinkedList<ActionStatusReader>();
 		
 		Element child = (Element)proc.getFirstChild();
 		while(child != null){
-			status.add(new ActionStatusReaderImpl(child));
+			status.add(new ActionStatusReaderImpl(child, monitor));
 			child = (Element)child.getNextSibling();
 		}
 	}

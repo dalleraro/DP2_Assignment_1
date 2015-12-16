@@ -9,12 +9,15 @@ import org.w3c.dom.Element;
 
 import it.polito.dp2.WF.ActionStatusReader;
 import it.polito.dp2.WF.Actor;
+import it.polito.dp2.WF.WorkflowMonitor;
 
 public class ActionStatusReaderImpl implements ActionStatusReader {
+	WorkflowMonitor monitor;
 	Element actionExec;
 	private DateFormat dateFormat;
 
-	public ActionStatusReaderImpl(Element actionExec) {
+	public ActionStatusReaderImpl(Element actionExec, WorkflowMonitor monitor) {
+		this.monitor = monitor;
 		this.actionExec = actionExec;
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 	}
@@ -27,7 +30,6 @@ public class ActionStatusReaderImpl implements ActionStatusReader {
 
 	@Override
 	public Actor getActor() {
-		// TODO
 		return null;
 	}
 

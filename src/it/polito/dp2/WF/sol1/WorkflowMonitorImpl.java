@@ -14,6 +14,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import it.polito.dp2.WF.Actor;
 import it.polito.dp2.WF.ProcessReader;
 import it.polito.dp2.WF.WorkflowMonitor;
 import it.polito.dp2.WF.WorkflowReader;
@@ -22,6 +23,7 @@ public class WorkflowMonitorImpl implements WorkflowMonitor {
 	private Document doc;
 	Set<ProcessReader> processes;
 	Set<WorkflowReader> workflows;
+	Set<Actor> actors;
 	
 	
 	public WorkflowMonitorImpl(){
@@ -40,7 +42,7 @@ public class WorkflowMonitorImpl implements WorkflowMonitor {
 			
 			NodeList procList = doc.getElementsByTagName("process");
 			for(int i=0; i<procList.getLength(); i++){
-				proc = new ProcessReaderImpl((Element)procList.item(i));
+				proc = new ProcessReaderImpl((Element)procList.item(i), this);
 				processes.add(proc);
 			}
 			
@@ -50,7 +52,7 @@ public class WorkflowMonitorImpl implements WorkflowMonitor {
 			
 			NodeList wfList = doc.getElementsByTagName("process");
 			for(int i=0; i<wfList.getLength(); i++){
-				wf = new WorkflowReaderImpl((Element)wfList.item(i));
+				wf = new WorkflowReaderImpl((Element)wfList.item(i), this);
 				workflows.add(wf);
 			}
 			
@@ -61,6 +63,16 @@ public class WorkflowMonitorImpl implements WorkflowMonitor {
 						((ProcessReaderImpl)pit).setWorkflow(wit);
 					}
 				}
+			}
+			
+			// Read Actors
+			Actor actor;
+			actors = new LinkedHashSet<Actor>();
+			
+			NodeList actorList = doc.getElementsByTagName("actor");
+			for(int i=0; i<actorList.getLength(); i++){
+				actor = new Actor(((Element)actorList).getAttribute("name"), ((Element)actorList).getAttribute("role"));
+				actors.add(actor);
 			}
 			
 		} catch (ParserConfigurationException e) {
@@ -82,7 +94,11 @@ public class WorkflowMonitorImpl implements WorkflowMonitor {
 	}
 
 	@Override
-	public WorkflowReader getWorkflow(String wf) {
+	public WorkflowReader getWorkflow(String wfName) {
+		for(WorkflowReader wf : workflows){
+			if(wf.getName().equals(wfName))
+				return wf;
+		}
 		return null;
 	}
 

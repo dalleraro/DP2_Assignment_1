@@ -8,20 +8,24 @@ import org.w3c.dom.NodeList;
 
 import it.polito.dp2.WF.ActionReader;
 import it.polito.dp2.WF.ProcessReader;
+import it.polito.dp2.WF.WorkflowMonitor;
 import it.polito.dp2.WF.WorkflowReader;
 
 public class WorkflowReaderImpl implements WorkflowReader {
+	WorkflowMonitor monitor;
 	private Set<ActionReader> actions;
 	private Set<ProcessReader> processes;
 	private Element wf;
 
-	public WorkflowReaderImpl(Element workflow) {
+	public WorkflowReaderImpl(Element workflow, WorkflowMonitor monitor) {
+		this.monitor = monitor;
 		this.wf = workflow;
 		this.processes = new LinkedHashSet<ProcessReader>();
 		ActionReader ac;
 		actions = new LinkedHashSet<ActionReader>();
 		
 		NodeList list = wf.getElementsByTagName("process");
+		// TODO create different type of actions
 		for(int i=0; i<list.getLength(); i++){
 			ac = new ActionReaderImpl((Element)list.item(i), this);
 			actions.add(ac);
