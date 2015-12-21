@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import it.polito.dp2.WF.ActionStatusReader;
 import it.polito.dp2.WF.ProcessReader;
@@ -25,23 +26,24 @@ public class ProcessReaderImpl implements ProcessReader {
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 		status = new LinkedList<ActionStatusReader>();
 		
-		Element child = (Element)proc.getFirstChild();
+		Node child = proc.getFirstChild();
 		while(child != null){
-			status.add(new ActionStatusReaderImpl(child, monitor));
-			child = (Element)child.getNextSibling();
+			if(child.getNodeType() == Node.ELEMENT_NODE)
+				status.add(new ActionStatusReaderImpl((Element)child, monitor));
+			child = child.getNextSibling();
 		}
 	}
 
 	@Override
-	public Calendar getStartTime() {	
+	public Calendar getStartTime(){	
+		Calendar startTime = Calendar.getInstance();	
 		try {
-			Calendar startTime = Calendar.getInstance();	
 			startTime.setTime(dateFormat.parse(proc.getAttribute("startDate")));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return startTime;
 	}
 
 	@Override

@@ -24,8 +24,7 @@ public class WorkflowMonitorImpl implements WorkflowMonitor {
 	Set<ProcessReader> processes;
 	Set<WorkflowReader> workflows;
 	Set<Actor> actors;
-	
-	
+
 	public WorkflowMonitorImpl(){
 
 		try {
@@ -36,6 +35,16 @@ public class WorkflowMonitorImpl implements WorkflowMonitor {
 			this.doc = dBuilder.parse(fXmlFile);
 			this.doc.getDocumentElement().normalize();
 			
+			// Read workflows
+			WorkflowReader wf;
+			workflows = new LinkedHashSet<WorkflowReader>();
+
+			NodeList wfList = doc.getElementsByTagName("workflow");
+			for(int i=0; i<wfList.getLength(); i++){
+				wf = new WorkflowReaderImpl((Element)wfList.item(i), this);
+				workflows.add(wf);
+			}
+			
 			// Read processes
 			ProcessReader proc;
 			processes = new LinkedHashSet<ProcessReader>();
@@ -43,26 +52,12 @@ public class WorkflowMonitorImpl implements WorkflowMonitor {
 			NodeList procList = doc.getElementsByTagName("process");
 			for(int i=0; i<procList.getLength(); i++){
 				proc = new ProcessReaderImpl((Element)procList.item(i), this);
-				processes.add(proc);
-			}
-			
-			// Read workflows
-			WorkflowReader wf;
-			workflows = new LinkedHashSet<WorkflowReader>();
-			
-			NodeList wfList = doc.getElementsByTagName("process");
-			for(int i=0; i<wfList.getLength(); i++){
-				wf = new WorkflowReaderImpl((Element)wfList.item(i), this);
-				workflows.add(wf);
-			}
-			
-			for(WorkflowReader wit : workflows){
-				for(ProcessReader pit : processes){
-					if(pit.getWorkflow().equals(wit.getName())){
-						((WorkflowReaderImpl)wit).addProcess(pit);
-						((ProcessReaderImpl)pit).setWorkflow(wit);
+				for(WorkflowReader wit : workflows)
+					if(((Element)procList.item(i)).getAttribute("workflow").equals(wit.getName())){
+						((WorkflowReaderImpl)wit).addProcess(proc);
+						((ProcessReaderImpl)proc).setWorkflow(wit);
 					}
-				}
+				processes.add(proc);
 			}
 			
 			// Read Actors
@@ -71,7 +66,7 @@ public class WorkflowMonitorImpl implements WorkflowMonitor {
 			
 			NodeList actorList = doc.getElementsByTagName("actor");
 			for(int i=0; i<actorList.getLength(); i++){
-				actor = new Actor(((Element)actorList).getAttribute("name"), ((Element)actorList).getAttribute("role"));
+				actor = new Actor(((Element)actorList.item(i)).getAttribute("name"), ((Element)actorList.item(i)).getAttribute("role"));
 				actors.add(actor);
 			}
 			

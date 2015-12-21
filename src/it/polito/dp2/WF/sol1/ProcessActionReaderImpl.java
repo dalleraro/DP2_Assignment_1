@@ -14,7 +14,9 @@ public class ProcessActionReaderImpl extends ActionReaderImpl implements
 
 	@Override
 	public WorkflowReader getActionWorkflow() {
-		// TODO
+		for(WorkflowReader wf : enclosingWf.monitor.workflows)
+			if(wf.getName().equals(this.action.getAttribute("workflow")))
+				return wf;
 		return null;
 	}
 

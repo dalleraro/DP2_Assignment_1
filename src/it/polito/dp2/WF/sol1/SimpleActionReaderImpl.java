@@ -1,5 +1,6 @@
 package it.polito.dp2.WF.sol1;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.w3c.dom.Element;
@@ -13,13 +14,17 @@ public class SimpleActionReaderImpl extends ActionReaderImpl implements
 
 	public SimpleActionReaderImpl(Element action, WorkflowReader enclosingWf) {
 		super(action, enclosingWf);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Set<ActionReader> getPossibleNextActions() {
-		// TODO Auto-generated method stub
-		return null;
+		String[] nextActions = this.action.getAttribute("nextPossActions").split("\\s");
+		Set<ActionReader> actions = new LinkedHashSet<ActionReader>();
+		for(String str : nextActions)
+			for(ActionReader action : enclosingWf.actions)
+				if(str.equals(action.getName()))
+					actions.add(action);
+		return actions;
 	}
 
 }

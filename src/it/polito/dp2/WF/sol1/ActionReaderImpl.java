@@ -7,10 +7,11 @@ import it.polito.dp2.WF.WorkflowReader;
 
 public class ActionReaderImpl implements ActionReader {
 	protected Element action;
-	protected WorkflowReader enclosingWf;
+	protected WorkflowReaderImpl enclosingWf;
 
 	public ActionReaderImpl(Element action, WorkflowReader encWf) {
 		this.action = action;
+		this.enclosingWf = (WorkflowReaderImpl) encWf;
 	}
 
 	@Override

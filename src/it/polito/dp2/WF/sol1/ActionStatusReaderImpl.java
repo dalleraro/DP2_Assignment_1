@@ -12,24 +12,26 @@ import it.polito.dp2.WF.Actor;
 import it.polito.dp2.WF.WorkflowMonitor;
 
 public class ActionStatusReaderImpl implements ActionStatusReader {
-	WorkflowMonitor monitor;
+	WorkflowMonitorImpl monitor;
 	Element actionExec;
 	private DateFormat dateFormat;
 
 	public ActionStatusReaderImpl(Element actionExec, WorkflowMonitor monitor) {
-		this.monitor = monitor;
+		this.monitor = (WorkflowMonitorImpl) monitor;
 		this.actionExec = actionExec;
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 	}
 
 	@Override
 	public String getActionName() {
-		actionExec.getAttribute("action");
-		return null;
+		return actionExec.getAttribute("action");
 	}
 
 	@Override
 	public Actor getActor() {
+		for(Actor actor : monitor.actors)
+			if(computeHash("a", actor.getName(), actor.getRole()).equals(actionExec.getAttribute("actor")))
+				return actor;
 		return null;
 	}
 
@@ -63,6 +65,11 @@ public class ActionStatusReaderImpl implements ActionStatusReader {
 			return false;
 		else
 			return true;
+	}
+	
+	private String computeHash(String start, String str1, String str2) {
+		String forhash = str1 + str2;
+		return start+forhash.hashCode();
 	}
 
 }
