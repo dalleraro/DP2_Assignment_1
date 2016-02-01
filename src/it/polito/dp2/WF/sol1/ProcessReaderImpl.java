@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class ProcessReaderImpl implements ProcessReader {
 
 	public ProcessReaderImpl(Element proc, WorkflowMonitor monitor) {
 		this.proc = proc;
-		dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm z");
 		status = new LinkedList<ActionStatusReader>();
 		
 		Node child = proc.getFirstChild();
@@ -36,7 +37,7 @@ public class ProcessReaderImpl implements ProcessReader {
 
 	@Override
 	public Calendar getStartTime(){	
-		Calendar startTime = Calendar.getInstance();	
+		GregorianCalendar startTime = new GregorianCalendar();
 		try {
 			startTime.setTime(dateFormat.parse(proc.getAttribute("startDate")));
 		} catch (ParseException e) {

@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.w3c.dom.Element;
 
@@ -19,7 +20,7 @@ public class ActionStatusReaderImpl implements ActionStatusReader {
 	public ActionStatusReaderImpl(Element actionExec, WorkflowMonitor monitor) {
 		this.monitor = (WorkflowMonitorImpl) monitor;
 		this.actionExec = actionExec;
-		dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm z");
 	}
 
 	@Override
@@ -37,12 +38,12 @@ public class ActionStatusReaderImpl implements ActionStatusReader {
 
 	@Override
 	public Calendar getTerminationTime() {
-		Calendar terminationTime;
+		GregorianCalendar terminationTime;
 		String time = actionExec.getAttribute("terminationTime");
 		if(time.isEmpty())
 			return null;
 		try {
-			terminationTime = Calendar.getInstance();
+			terminationTime = new GregorianCalendar();
 			terminationTime.setTime(dateFormat.parse(time));
 		} catch (ParseException e) {
 			e.printStackTrace();

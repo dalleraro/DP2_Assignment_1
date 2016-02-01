@@ -6,13 +6,13 @@
 >
 <!ELEMENT action (simple_action|process_action) >
 <!ATTLIST action
-        name            ID          	#REQUIRED
+        name            NMTOKEN         #REQUIRED
         role            NMTOKEN     	#REQUIRED
         automInst       (true|false)    "false"
 >
 <!ELEMENT simple_action EMPTY >
 <!ATTLIST simple_action
-        nextPossActions IDREFS      	#IMPLIED
+        nextPossActions NMTOKENS      	#IMPLIED
 >
 <!ELEMENT process_action EMPTY >
 <!ATTLIST process_action
@@ -26,7 +26,7 @@
 >
 <!ELEMENT action_execution EMPTY >
 <!ATTLIST action_execution
-		action			IDREF			#REQUIRED
+		action			NMTOKEN			#REQUIRED
 		actor			IDREF			#IMPLIED
 		terminationTime	CDATA			#IMPLIED
 >

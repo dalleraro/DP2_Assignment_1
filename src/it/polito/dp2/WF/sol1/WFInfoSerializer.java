@@ -49,7 +49,7 @@ public class WFInfoSerializer {
 	public WFInfoSerializer(String rootname) throws WorkflowMonitorException, ParserConfigurationException {
 		WorkflowMonitorFactory factory = WorkflowMonitorFactory.newInstance();
 		monitor = factory.newWorkflowMonitor();
-		dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm z");
 		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
 		// factory.setNamespaceAware (true);
 		DocumentBuilder builder = domFactory.newDocumentBuilder();
@@ -66,7 +66,7 @@ public class WFInfoSerializer {
 	public WFInfoSerializer(String rootname, WorkflowMonitor monitor) throws ParserConfigurationException {
 		super();
 		this.monitor = monitor;
-		dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss z");
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		// factory.setNamespaceAware (true);
 		DocumentBuilder builder = factory.newDocumentBuilder();
