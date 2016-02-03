@@ -1,6 +1,6 @@
 <!-- DTD describing a workflow -->
 <!ELEMENT workflow_info ((workflow|process|actor)*) >
-<!ELEMENT workflow (action*)>
+<!ELEMENT workflow (action+)>
 <!ATTLIST workflow
         name            ID          	#REQUIRED
 >
@@ -20,7 +20,6 @@
 >
 <!ELEMENT process (action_execution*) >
 <!ATTLIST process
-		id				ID				#REQUIRED
 		startDate		CDATA			#REQUIRED
 		workflow		IDREF			#REQUIRED
 >

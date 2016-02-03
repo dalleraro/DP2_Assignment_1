@@ -41,7 +41,7 @@ public class ProcessReaderImpl implements ProcessReader {
 		try {
 			startTime.setTime(dateFormat.parse(proc.getAttribute("startDate")));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error while parsing the start date of the process");
 			e.printStackTrace();
 		}
 		return startTime;

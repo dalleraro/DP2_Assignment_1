@@ -174,8 +174,13 @@
 				<pathelement location="${lib.dir}/lab1.jar"/>
 				<pathelement location="${lib.dir}/junit-4.5.jar"/>
 			</classpath>
+			
+<!--			<jvmarg value="-Xdebug" />
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5400" />
+			-->
+			
 		</junit>
-		<fail if="test_failed" status="${exit.code}" message="*** Some Tests FAILED ***"/>
+		<fail if="test_failed" status="126" message="*** Some Tests FAILED ***"/>
 		<echo>*** All Tests PASSED  ***</echo>
 		<delete dir="${temp.dir}"/>
 	</target>

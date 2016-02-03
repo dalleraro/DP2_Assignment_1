@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE workflow SYSTEM "wfinfo.dtd" >
+<!DOCTYPE workflow_info SYSTEM "wfinfo.dtd" >
 
-<workflow name="article_production">
-    <action name="Writing" role="Journalist" automInst="true">
-        <simple_action nextPossActions="Checking"></simple_action>
-    </action>
-    <action name="Checking" role="Editor">
-        <simple_action nextPossActions="Revising Publication"></simple_action>
-    </action>
-    <action name="Revising" role="Journalist">
-        <simple_action nextPossActions="Checking"></simple_action>
-    </action>
-    <action name="Publication" role="Editor">
-        <simple_action></simple_action>
-    </action>
-</workflow>
+<workflow_info>
+	<workflow name="article_production">
+		<action name="Writing" role="Journalist" automInst="true">
+			<simple_action nextPossActions="Checking"></simple_action>
+		</action>
+		<action name="Checking" role="Editor">
+			<simple_action nextPossActions="Revising Publication"></simple_action>
+		</action>
+		<action name="Revising" role="Journalist">
+			<simple_action nextPossActions="Checking"></simple_action>
+		</action>
+		<action name="Publication" role="Editor">
+			<simple_action></simple_action>
+		</action>
+	</workflow>
+	<process startDate="21/10/2015 01:46 CEST" workflow="article_production">
+		<action_execution action="Writing" actor="a1776992306" terminationTime="22/10/2015 04:36 CEST"/>
+		<action_execution action="Checking" actor="a1642564206" />
+	</process>
+	<actor id="a1776992306" name="Joseph Bianchi" role="Journalist"/>
+	<actor id="a1642564206" name="Claudio Neri" role="Editor"/>
+</workflow_info>

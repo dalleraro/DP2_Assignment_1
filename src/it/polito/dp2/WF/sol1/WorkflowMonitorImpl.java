@@ -71,13 +71,13 @@ public class WorkflowMonitorImpl implements WorkflowMonitor {
 			}
 			
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error while creating the Document Builder");
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
+			System.err.println("An error occurred while parsing the XML file");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("An IO error occurred while parsing the XML file");
 			e.printStackTrace();
 		}
 		

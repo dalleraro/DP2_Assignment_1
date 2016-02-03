@@ -1,0 +1,26 @@
+DESCRIPTION OF THE DTD
+
+The main element is called workflow_info, and can contain an arbitrary number
+of workflow, process and actor elements.
+
+A workflow element contains one or more action elements and as a "name" attribute,
+which is its unique identifier.
+
+An action can contain either one simple_action or one process_action element,
+the first one containing an optional list of references to action names as an attribute, 
+the second one the reference to a workflow name, always as an attribute.
+Actions are also characterized by three attributes: a "name", a "role" and "automInst", 
+the last one can assume two values "true" or "false" ("false" is the default), telling if
+the action is automatically instantiated.
+
+An actor is an empty element and has three attributes: an "ID", a "name" and a "role".
+The ID is computed as the hash of the name and the role combined, this allows the unambiguous
+identification of an actor inside an action_execution.
+
+A process contains a sequence of action_execution elements (zero or many) and the reference to
+the workflow ID is included as an attribute, as well as the start date.
+
+An action_execution, similarly to actor, is an empty element with three attributes:
+the name of the executed action, the idref of the actor in charge and the termination time.
+"actor" and "termination time" are optional, so that if they are missing this means that the action
+is not taken in charge and not terminated.

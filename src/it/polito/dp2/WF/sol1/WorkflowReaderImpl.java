@@ -25,7 +25,7 @@ public class WorkflowReaderImpl implements WorkflowReader {
 		actions = new LinkedHashSet<ActionReader>();
 		
 		NodeList list = wf.getElementsByTagName("process");
-		// TODO create different type of actions
+
 		for(int i=0; i<list.getLength(); i++){
 			if(((Element)list.item(i)).getElementsByTagName("simple_action").getLength() != 0)
 				ac = new SimpleActionReaderImpl((Element)list.item(i), this);

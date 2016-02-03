@@ -63,22 +63,6 @@ public class WFInfoSerializer {
 		doc.appendChild(root);
 	}
 
-	public WFInfoSerializer(String rootname, WorkflowMonitor monitor) throws ParserConfigurationException {
-		super();
-		this.monitor = monitor;
-		dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss z");
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		// factory.setNamespaceAware (true);
-		DocumentBuilder builder = factory.newDocumentBuilder();
-
-		// Create the document
-		doc = builder.newDocument();
-
-		// Create and append the root element
-		root = (Element) doc.createElement(rootname);
-		doc.appendChild(root);
-	}
-
 
 	public static void main(String[] args) {
 		WFInfoSerializer wf;
@@ -97,10 +81,10 @@ public class WFInfoSerializer {
 			e.printStackTrace();
 			System.exit(1);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Could not find output file");
 			e.printStackTrace();
 		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
+			System.err.println("An error occurred while serializing the XML");
 			e.printStackTrace();
 		}
 	}
@@ -122,8 +106,6 @@ public class WFInfoSerializer {
 			String startDate = dateFormat.format(prr.getStartTime().getTime());
 			process.setAttribute("startDate", startDate);
 			process.setAttribute("workflow", wfName);
-			String procHash = computeHash("p", wfName, startDate);
-			process.setAttribute("id", procHash);
 			List<ActionStatusReader> statusSet = prr.getStatus();
 			if(!statusSet.isEmpty()){
 				for (ActionStatusReader asr : statusSet){
