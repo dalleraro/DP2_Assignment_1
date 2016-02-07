@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE workflow_info SYSTEM "wfinfo.dtd" >
+<!DOCTYPE workflow_info SYSTEM "wfInfo.dtd" >
 
 <workflow_info>
 	<workflow name="article_production">

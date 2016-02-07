@@ -1,18 +1,9 @@
 package it.polito.dp2.WF.sol1;
 
-import it.polito.dp2.WF.ActionReader;
-import it.polito.dp2.WF.ActionStatusReader;
-import it.polito.dp2.WF.ProcessActionReader;
-import it.polito.dp2.WF.ProcessReader;
-import it.polito.dp2.WF.SimpleActionReader;
-import it.polito.dp2.WF.WorkflowMonitor;
-import it.polito.dp2.WF.WorkflowMonitorException;
-import it.polito.dp2.WF.WorkflowMonitorFactory;
-import it.polito.dp2.WF.WorkflowReader;
-
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -32,6 +23,16 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import it.polito.dp2.WF.ActionReader;
+import it.polito.dp2.WF.ActionStatusReader;
+import it.polito.dp2.WF.ProcessActionReader;
+import it.polito.dp2.WF.ProcessReader;
+import it.polito.dp2.WF.SimpleActionReader;
+import it.polito.dp2.WF.WorkflowMonitor;
+import it.polito.dp2.WF.WorkflowMonitorException;
+import it.polito.dp2.WF.WorkflowMonitorFactory;
+import it.polito.dp2.WF.WorkflowReader;
 
 public class WFInfoSerializer {
 
@@ -67,10 +68,11 @@ public class WFInfoSerializer {
 	public static void main(String[] args) {
 		WFInfoSerializer wf;
 		try {
-			File out = new File(args[0]);
+			FileOutputStream out = new FileOutputStream(args[0]);
 			wf = new WFInfoSerializer("workflow_info");
 			wf.appendAll();
-			wf.serialize(new PrintStream(out));
+			wf.serialize(out);
+			out.close();
 
 		} catch (WorkflowMonitorException e) {
 			System.err.println("Could not instantiate data generator.");
@@ -85,6 +87,9 @@ public class WFInfoSerializer {
 			e.printStackTrace();
 		} catch (TransformerException e) {
 			System.err.println("An error occurred while serializing the XML");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Error closing the output file");
 			e.printStackTrace();
 		}
 	}
@@ -178,12 +183,12 @@ public class WFInfoSerializer {
 
 	}
 
-	public void serialize(PrintStream out) throws TransformerException {
+	public void serialize(OutputStream out) throws TransformerException {
 		TransformerFactory xformFactory = TransformerFactory.newInstance ();
 		Transformer idTransform;
 		idTransform = xformFactory.newTransformer ();
 		idTransform.setOutputProperty(OutputKeys.INDENT, "yes");
-		idTransform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "WfInfo.dtd");
+		idTransform.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "wfInfo.dtd");
 		Source input = new DOMSource (doc);
 		Result output = new StreamResult (out);
 		idTransform.transform (input, output);
